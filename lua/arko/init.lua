@@ -1,44 +1,47 @@
-/*
-
-Arko Lib For Garry's Mod
-Author: valilerr
-Discord: valilerr
-
-*/
+--[[
+    Arko
+    Author: valilerr
+    Discord: valilerr
+]]
 
 arko = arko or {
-    VERSION = 0.1,
+    version = 'dev',
     init = function(path)
         local function initFile(filePath)
             if string.find(filePath, "sh_") then
                 if SERVER then
                     AddCSLuaFile(filePath)
                     include(filePath)
+                    print("Shared File [" .. filePath .. "] loaded.")
                 else
                     include(filePath)
+                    print("Shared File [" .. filePath .. "] loaded.")
                 end
             elseif string.find(filePath, "sv_") then
                 if SERVER then
                     include(filePath)
+                    print("Server File [" .. filePath .. "] loaded.")
                 end
             elseif string.find(filePath, "cl_") then
                 if SERVER then
                     AddCSLuaFile(filePath)
+                    print("Client File [" .. filePath .. "] loaded.")
                 else
                     include(filePath)
+                    print("Client File [" .. filePath .. "] loaded.")
                 end
             end
-            print("File [" .. filePath .. "] loaded.")
         end
-        local function initFolder(folderPath)
-            local files, dirs = file.Find(folderPath .. "/*", "LUA")
 
-            for _, file in ipairs(files) do
-                arko.init(folderPath .. "/" .. file)
+        local function initFolder(folderPath)
+            local files, directories = file.Find(folderPath .. "/*", "LUA")
+
+            for _, fileName in ipairs(files) do
+                arko.init(folderPath .. "/" .. fileName)
             end
 
-            for _, dir in ipairs(dirs) do
-                initFolder(folderPath .. "/" .. dir)
+            for _, folderName in ipairs(directories) do
+                arko.init(folderPath .. "/" .. folderName)
             end
         end
 
@@ -47,32 +50,44 @@ arko = arko or {
         else
             initFolder(path)
         end
+
     end,
-    COMPONENTS = {
+    isLoaded = false,
+    loadTime = 0,
+    core = {
         run = function()
-            print("Components:")
-            arko.init("arko/components")
-            print("Components loaded.")
+            arko.init("arko/core")
         end
     },
-    UI = {
+    ui = {
         run = function()
-            print("UI:")
             arko.init("arko/ui")
-            print("UI loaded.")
+        end
+    },
+    addons = {
+        run = function()
+            arko.init("arko_addons")
         end
     },
     run = function()
-        local startTime = SysTime()
-        arko.isLoaded = false
-        print("")
-        print("Arko[" .. arko.VERSION .. "] Loading...")
-        arko.init("sh_cfg.lua")
-        arko.COMPONENTS.run()
-        arko.UI.run()
+        arko.loadTime = SysTime()
+        arko.isLoaded = false 
+        print('')
+        print('Arko(' .. arko.version .. ') by VALIL')
+        arko.init("arko/sh_cfg.lua")
+        arko.core.run() 
+        print('Core loaded!')
+
+        arko.ui.run()
+        print('UI loaded!')
+
+        arko.addons.run()
+        print('Addons loaded!')
         arko.isLoaded = true
-        print("Loaded in " .. math.Round(SysTime() - startTime, 3) .. " seconds.")
-        print("")
+        arko.loadTime = math.Round(SysTime() - arko.loadTime, 3)
+        print('] Arko loaded in ' .. arko.loadTime .. 'seconds!')
+        
+        print('')
     end
 }
 
