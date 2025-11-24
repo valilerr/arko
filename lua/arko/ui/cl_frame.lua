@@ -89,8 +89,8 @@ function PANEL:Init()
     self.draggable = true 
     self.close = true 
     self.alpha = false 
-    self.leftTitle = 'Frame'
-    self.centerTitle = 'Description'
+    self.leftTitle = 'Title'
+    self.centerTitle = 'Subtitle'
     self.popup = true
 
     if self.close then
@@ -149,11 +149,11 @@ function PANEL:Paint(w, h)
     end
 end
 
-function PANEL:title1(text)
+function PANEL:setTitle(text)
     self.leftTitle = text
 end
 
-function PANEL:title2(text)
+function PANEL:setSubtitle(text)
     self.centerTitle = text
 end
 

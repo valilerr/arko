@@ -5,5 +5,4 @@ for i = 8, 100 do
         extended = true,
         antialias = true
     })
-    print(i)
 end

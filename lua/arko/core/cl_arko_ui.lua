@@ -1,19 +1,22 @@
 local sw, sh = ScrW(), ScrH()
 
-function arko_frame()
-    local frame = vgui.Create('arko.frame')
-    frame:SetSize(sw / 3, sh / 3)
-    frame:Center()
-    frame:title1('Arko')
-    frame:title2('Меню')
-end
+arko.client.commands = {
+    ["ui.frame"] = function()
+        local frame = vgui.Create('arko.frame')
+        frame:SetSize(sw / 3, sh / 3)
+        frame:Center()
+        frame:setTitle('Arko')
+        frame:setSubtitle('Меню')
+    end
+}
 
-concommand.Add('arko.frame', arko_frame)
 
-function arko_textbox()
-    arko.func.textbox('Test', 'Test', function(text)
-        arko.func.notify(LocalPlayer(), text, 'generic', 5)
+function arko.client.init_commands()
+    concommand.Add("arko", function(_, _, args)
+        if arko.client.commands[args[1]] then
+            arko.client.commands[args[1]]()
+        end
     end)
 end
 
-concommand.Add('arko.textbox', arko_textbox)
+arko.client.init_commands()
