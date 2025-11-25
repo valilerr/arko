@@ -1,3 +1,3 @@
-<img width="1024" height="256" alt="arko_wide" src="https://github.com/user-attachments/assets/94cc0979-c1c6-475e-b66c-c5154bafaf82" />
+<img width="1024" height="128" alt="arko_wide" src="https://github.com/user-attachments/assets/9e94d826-e263-482a-8b25-52b7029c445f" />
 
 # Arko GMod Library
