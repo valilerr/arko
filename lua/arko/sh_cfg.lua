@@ -11,7 +11,7 @@ arko.cfg = {
         ['sbarGrip'] = Color(200, 200, 200),
         ['sbarBtn'] = Color(150, 150, 150),
         ["button"] = Color(32, 32, 32),
-        ["hoverButton"] = Color(16, 16, 16)
+        ["hoverButton"] = Color(192, 192, 192)
     }
 }
 

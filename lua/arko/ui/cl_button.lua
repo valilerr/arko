@@ -20,6 +20,7 @@ function PANEL:Paint(w, h)
     draw.RoundedBox(8, 0, 0, w, h, Color(hover.r, hover.g, hover.b, self.hoverStatus * 255))
     if self.icon != nil then
         arko.func.drawIcon(w / 2 - w / 2 / 2, h / 2 - h / 2 / 2, w / 2, h / 2, Color(200, 200, 200), self.icon)
+        arko.func.drawIcon(w / 2 - w / 2 / 2, h / 2 - h / 2 / 2, w / 2, h / 2, Color(buttonColor.r, buttonColor.g, buttonColor.b, self.hoverStatus * 255), self.icon)
     end
 end
 

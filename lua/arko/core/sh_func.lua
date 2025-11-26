@@ -62,18 +62,27 @@ end
 
 function arko.func.notify(ply, text, type, duration)
     if ply == LocalPlayer() then
+        local colors = {
+            ["generic"] = Color(75, 220, 75),
+            ["hint"] = Color(220, 220, 75),
+            ["error"] = Color(220, 75, 75)
+        }
         surface.SetFont('arko.font18')
         local textW, textH = surface.GetTextSize(text)
         local panel = vgui.Create('arko.panel')
         panel:Dock(TOP)
         panel:DockMargin(5, 5, ScrW() - textW * 1.075, 0)
         panel:SetTall(ScrH() / 30)
+        local startTime = SysTime()
         panel.Paint = function(_, w, h)
-            draw.RoundedBox(8, 0, 0, w, h, arko.cfg.get_color('primary'))
-            draw.RoundedBox(8, 2, 2, w - 4, h - 4, arko.cfg.get_color('background'))
-            draw.RoundedBox(8, 4, 4, 4, h - 8, type == 'error' and Color(255, 75, 75) or Color(75, 255, 75))
+            local elapsed = SysTime() - startTime
+            local progress = math.Clamp(elapsed / duration, 0, 1)
+            local w, h = panel:GetSize()
+            draw.RoundedBox(6, Lerp(progress, 0, w / 2), 0, Lerp(progress, w, 0), h, arko.getColor("text"))
+            draw.RoundedBox(8, 2, 2, w - 4, h - 4, arko.getColor("primary"))
+            draw.RoundedBox(8, 0, 0, 4, h, colors[type])
             
-            draw.SimpleText(text, 'arko.font18', 12, h / 2 - textH / 2, arko.cfg.get_color('text'))
+            draw.SimpleText(text, 'arko.font18', 12, h / 2 - textH / 2, arko.getColor('text'))
         end
 
         arko.func.anim(panel, 0.2)

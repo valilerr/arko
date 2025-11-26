@@ -103,7 +103,7 @@ function PANEL:Init()
 
         self.clsBtn.DoRightClick = function()
             self.alpha = !self.alpha
-            notification.AddLegacy('Чтобы вернуть панель нажмите ALT+E', 'hint', 5)
+            arko.func.notify(LocalPlayer(), "Чтобы вернуть панель нажмите ALT+E", "hint", 5)
         end
 
         self.clsBtn.Think = function()
