@@ -1,12 +1,13 @@
 arko.cfg = {
     ["addonInitFile"] = "init.lua",
-    ["font"] = "Montserrat",
+    ["font"] = "Unbounded",
     ["colors"] = {
         ['primary'] = Color(25, 35, 40),
         ['secondary'] = Color(44, 45, 46),
         ['header'] = Color(50, 50, 50),
         ['stroke'] = Color(25, 25, 25),
         ['text'] = Color(200, 200, 200),
+        ["darkText"] = Color(175, 175, 175),
         ['sbar'] = Color(100, 100, 100),
         ['sbarGrip'] = Color(200, 200, 200),
         ['sbarBtn'] = Color(150, 150, 150),

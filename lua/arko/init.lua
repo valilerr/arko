@@ -42,7 +42,7 @@ arko = arko or {
         end
 
         for _, folderName in ipairs(directories) do
-            arko.init(folderPath .. "/" .. folderName)
+            arko.initFolder(folderPath .. "/" .. folderName)
         end
     end,
     isLoaded = false,
@@ -59,10 +59,7 @@ arko = arko or {
     },
     addons = {
         run = function()
-            local _, directories = file.Find("arko_addons/*", "LUA")
-            for _, addon in ipairs(directories) do
-                arko.init("arko_addons/" .. addon .. "/sh_init.lua")
-            end
+            arko.initFolder("arko_addons")
         end
     },
     run = function()
