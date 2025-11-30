@@ -7,14 +7,20 @@ arko.client.commands = {
         frame:Center()
         frame:setTitle('Arko')
         frame:setSubtitle('Меню')
+    end,
+    ["info"] = function()
+        print("Arko GMod Library")
+        print("Version: " .. arko.version)
     end
 }
 
 
 function arko.client.init_commands()
-    concommand.Add("arko", function(_, _, args)
+    concommand.Add("arko", function(pl, _, args)
         if arko.client.commands[args[1]] then
             arko.client.commands[args[1]]()
+        else
+            print("Command [" .. args[1] .. "] not found.")
         end
     end)
 end

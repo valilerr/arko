@@ -5,7 +5,7 @@ function PANEL:Init()
 
     self:SetTall(24)
 
-    self.main = vgui.Create('Panel', self)
+    self.main = vgui.Create('DPanel', self)
     self.main.Paint = function(_, w, h)
         draw.RoundedBox(6, 0, 0, w, h, arko.cfg.get_color('text'))
     end
@@ -30,7 +30,7 @@ function PANEL:GetValue()
 end
 
 function PANEL:Paint(w, h)
-    if !self.title == '' then
+    if self.title != '' then
         draw.SimpleText(self.title, 'arko.font18', 6, 0, arko.cfg.get_color('text'))
     end
 end

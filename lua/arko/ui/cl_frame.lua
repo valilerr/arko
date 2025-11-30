@@ -6,10 +6,10 @@ local dragSystem = {
     offset = {x = 0, y = 0}
 }
 
-local primary = arko.getColor("primary")
-local text = arko.getColor("text")
-local header = arko.getColor("header")
-local stroke = arko.getColor("stroke")
+local primary = arko.getColor('primary')
+local text = arko.getColor('text')
+local header = arko.getColor('header')
+local stroke = arko.getColor('stroke')
 
 function MakePanelDraggable(panel)
     panel.dragPanel = vgui.Create('DButton', panel)
@@ -58,7 +58,7 @@ function MakePanelDraggable(panel)
     panel.dragPanel.OnMouseReleased = function(mouseCode)
         dragSystem.activePanel = nil
         panel:MouseCapture(false)
-        panel:SetCursor("arrow")
+        panel:SetCursor('arrow')
             
         panel:SetZPos(0)
         panel:SetAlpha(255)
@@ -97,13 +97,11 @@ function PANEL:Init()
         self.clsBtn = vgui.Create('arko.button', self)
         self.clsBtn:SetSize(ScrH() / 50, ScrH() / 50)
         self.clsBtn:setIcon(Material('arko/close.png'))
-        self.clsBtn.DoClick = function()
-            arko.func.closeAnim(self, 0.2)
-        end
+        self.clsBtn.DoClick = function() arko.func.animateAlpha(self, .2, true) end
 
         self.clsBtn.DoRightClick = function()
             self.alpha = !self.alpha
-            arko.func.notify(LocalPlayer(), "Чтобы вернуть панель нажмите ALT+E", "hint", 5)
+            arko.func.notify(LocalPlayer(), 'Чтобы вернуть панель нажмите ALT+E"', 'hint', 5)
         end
 
         self.clsBtn.Think = function()
@@ -123,7 +121,7 @@ function PANEL:Init()
         MakePanelDraggable(self)
     end
 
-    arko.func.anim(self, 0.2)
+    arko.func.animateAlpha(self, 0.2)
 end
 
 function PANEL:Paint(w, h)
@@ -167,6 +165,10 @@ end
 
 function PANEL:makePopup(bool)
     self.popup = bool
+end
+
+function PANEL:close()
+    arko.func.animateAlpha(self, .2, true)
 end
 
 vgui.Register('arko.frame', PANEL, 'EditablePanel')
