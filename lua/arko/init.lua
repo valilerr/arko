@@ -1,11 +1,12 @@
 --[[
-    Arko
-    Author: valilerr
+    Arko - GMod Library 
+    
+    by valilerr
     Discord: valilerr
 ]]
 
 arko = arko or {
-    version = '0.3',
+    version = '0.4',
     client = {},
     server = {},
     init = function(path)
@@ -13,23 +14,18 @@ arko = arko or {
             if SERVER then
                 AddCSLuaFile(path)
                 include(path)
-                print("Shared File [" .. path .. "] loaded.")
             else
                 include(path)
-                print("Shared File [" .. path .. "] loaded.")
             end
         elseif string.find(path, "sv_") then
             if SERVER then
                 include(path)
-                print("Server File [" .. path .. "] loaded.")
             end
         elseif string.find(path, "cl_") then
             if SERVER then
                 AddCSLuaFile(path)
-                print("Client File [" .. path .. "] loaded.")
             else
                 include(path)
-                print("Client File [" .. path .. "] loaded.")
             end
         end
     end,
@@ -59,7 +55,11 @@ arko = arko or {
     },
     addons = {
         run = function()
-            arko.initFolder("arko_addons")
+            local _, directories = file.Find('arko_addons/*', 'LUA')
+
+            for _, dir in ipairs(directories) do
+                arko.init('arko_addons/' .. dir .. '/' .. arko.getCfg('addonInitFile'))
+            end
         end
     },
     run = function()
@@ -67,7 +67,7 @@ arko = arko or {
         arko.isLoaded = false 
         print('')
         print('Arko(' .. arko.version .. ') by VALIL')
-        arko.init("arko/sh_cfg.lua")
+        arko.init('arko/sh_cfg.lua')
         arko.core.run() 
         print('Core loaded!')
 

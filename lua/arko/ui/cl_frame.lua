@@ -8,6 +8,7 @@ local dragSystem = {
 
 local primary = arko.getColor('primary')
 local text = arko.getColor('text')
+local darkText = arko.getColor('darkText')
 local header = arko.getColor('header')
 local stroke = arko.getColor('stroke')
 
@@ -128,7 +129,7 @@ function PANEL:Paint(w, h)
     draw.RoundedBox(8, 0, 0, w, h, self.alpha and Color(primary.r, primary.g, primary.b, 200) or primary)
     draw.RoundedBox(8, 2, 2, w - 4, ScrH() / 50, self.alpha and Color(header.r, header.g, header.b, 200) or header)
     draw.SimpleText(self.leftTitle, 'arko.font16', 5, 3, self.colorText)
-    draw.SimpleText(self.centerTitle, 'arko.font12', w / 2 - surface.GetTextSize(self.centerTitle) / 2, 6, text)
+    draw.SimpleText(self.centerTitle, 'arko.font12', w / 2 - surface.GetTextSize(self.centerTitle) / 2, 6, darkText)
 
     if self.close then
         self.clsBtn:SetPos(w - ScrH() / 50 - 2, 2)

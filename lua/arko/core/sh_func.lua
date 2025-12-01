@@ -49,6 +49,24 @@ arko.func = arko.func or {
         end
     end,
 
+    animateValue = function(oldValue, newValue, duration)
+        local startTime = SysTime()
+
+        hook.Add('Think', 'Arko.AnimateValue', function()
+            local elapsed = SysTime() - startTime
+            local progress = math.Clamp(elapsed / duration, 0, 1)
+
+            local newValue = Lerp(progress, oldValue, newValue)
+
+            if progress == 1 then
+                hook.Remove('Think', 'Arko.AnimateValue')
+                return newValue
+            end
+
+            return newValue
+        end)
+    end,
+
     notify = function(ply, text, type, duration)
         if ply == LocalPlayer() then
             local colors = {
@@ -127,54 +145,14 @@ arko.func = arko.func or {
         end
     end,
 
-    renderPlayerModel = function(parent, ply, options)
-        options = options or {}
-        local w = options.width or 200
-        local h = options.height or 200
-        local fov = options.fov or 45
-        local camOffset = options.camOffset or Vector(-15, 0, 0)
-        local lookAtHeight = options.lookAtHeight or 60
-        
-        local panel = vgui.Create("DModelPanel", parent)
-
-        panel:SetSize(w, h)
-        panel:SetModel(ply:GetModel())
-        
-        panel.Entity:SetSkin(ply:GetSkin())
-        for k, v in pairs(ply:GetBodyGroups()) do
-            panel.Entity:SetBodygroup(v.id, ply:GetBodygroup(v.id))
-        end
-        
-        local lookAtPos = ply:GetPos() + Vector(0, 0, lookAtHeight)
-        panel:SetLookAt(lookAtPos)
-        panel:SetCamPos(lookAtPos + camOffset)
-        panel:SetFOV(fov)
-        
-        function panel:LayoutEntity(ent)
-            if IsValid(ply) then
-                ent:SetSequence(ply:GetSequence())
-                ent:SetPoseParametersFromTable(ply:GetPoseParameters())
-                
-                ent:SetSkin(ply:GetSkin())
-                for k, v in pairs(ply:GetBodyGroups()) do
-                    ent:SetBodygroup(v.id, ply:GetBodygroup(v.id))
-                end
-            end
-            self:RunAnimation()
-        end
-        
-        function panel:UpdateModel()
-            if IsValid(ply) then
-                self:SetModel(ply:GetModel())
-            end
-        end
-        
-        return panel
-    end,
-
     drawIcon = function(x, y, w, h, color, material)
         surface.SetMaterial(material)
         surface.SetDrawColor(color)
         surface.DrawTexturedRect(x, y, w, h)
-    end
+    end,
+
+    getTextSize = function(text, font)
+        surface.SetFont(font)
+        return surface.GetTextSize(text)
+    end,
 }

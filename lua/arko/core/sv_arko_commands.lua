@@ -26,7 +26,7 @@ arko.server.commands = {
             print(name)
         end
     end,
-    ["restart"] = function()
+    ["rerun"] = function()
         arko.run()
     end
 }

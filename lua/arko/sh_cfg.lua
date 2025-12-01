@@ -1,7 +1,7 @@
 arko.cfg = {
     ['addonInitFile'] = 'init.lua',
     ['font'] = 'Unbounded',
-    ["colors"] = {
+    ['colors'] = {
         ['primary'] = Color(25, 35, 40),
         ['secondary'] = Color(44, 45, 46),
         ['header'] =  Color(50, 50, 50),
