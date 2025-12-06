@@ -66,26 +66,31 @@ arko = arko or {
         arko.loadTime = SysTime()
         arko.isLoaded = false 
         print('')
-        print('Arko(' .. arko.version .. ') by VALIL')
+
+        MsgC(Color(75, 220, 75), 'Arko[v' .. arko.version .. '] loading...\n')
+
         arko.init('arko/sh_cfg.lua')
+
         arko.core.run() 
-        print('Core loaded!')
+        MsgC(Color(75, 220, 75), '(Core) ', Color(255, 255, 255), 'Loaded in ' .. math.Round(SysTime() - arko.loadTime, 3) .. ' seconds.\n')
 
         arko.ui.run()
-        print('UI loaded!')
-
-        arko.addons.run()
-        print('Addons loaded!')
+        MsgC(Color(75, 220, 75), '(UI) ', Color(255, 255, 255), 'Loaded in ' .. math.Round(SysTime() - arko.loadTime, 3) .. ' seconds.\n')
 
         if SERVER then
             resource.AddWorkshop("3610914065")
         end
+        MsgC(Color(75, 220, 75), '(Workshop) ', Color(255, 255, 255), 'Loaded in ' .. math.Round(SysTime() - arko.loadTime, 3) .. ' seconds.\n')
 
         arko.isLoaded = true
         arko.loadTime = math.Round(SysTime() - arko.loadTime, 3)
-        print('] Arko loaded in ' .. arko.loadTime .. ' seconds!')
+        
+        MsgC(Color(75, 220, 75), 'Arko loaded in ' .. arko.loadTime .. ' seconds.\n')
         
         print('')
+
+        arko.addons.run()
+        MsgC(Color(75, 220, 75), '(Arko) ', Color(255, 255, 255), 'Addons loaded!\n')
     end
 }
 

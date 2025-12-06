@@ -1,4 +1,5 @@
 local PANEL = {}
+local sw, sh = ScrW(), ScrH()
 
 local dragSystem = {
     activePanel = nil,
@@ -74,8 +75,8 @@ function MakePanelDraggable(panel)
         local newX = mouseX - dragSystem.offset.x
         local newY = mouseY - dragSystem.offset.y
         
-        newX = math.Clamp(newX, 0, ScrW() - panel:GetWide())
-        newY = math.Clamp(newY, 0, ScrH() - panel:GetTall())
+        newX = math.Clamp(newX, 0, sw - panel:GetWide())
+        newY = math.Clamp(newY, 0, sh - panel:GetTall())
         
         local currentX, currentY = panel:GetPos()
         panel:SetPos(
@@ -96,7 +97,7 @@ function PANEL:Init()
 
     if self.close then
         self.clsBtn = vgui.Create('arko.button', self)
-        self.clsBtn:SetSize(ScrH() / 50, ScrH() / 50)
+        self.clsBtn:SetSize(sh * .02, sh * .02)
         self.clsBtn:setIcon(Material('arko/close.png'))
         self.clsBtn.DoClick = function() arko.func.animateAlpha(self, .2, true) end
 
@@ -127,21 +128,23 @@ end
 
 function PANEL:Paint(w, h)
     draw.RoundedBox(8, 0, 0, w, h, self.alpha and Color(primary.r, primary.g, primary.b, 200) or primary)
-    draw.RoundedBox(8, 2, 2, w - 4, ScrH() / 50, self.alpha and Color(header.r, header.g, header.b, 200) or header)
-    draw.SimpleText(self.leftTitle, 'arko.font16', 5, 3, self.colorText)
+    draw.RoundedBox(8, 2, 2, w - 4, sh * .02, self.alpha and Color(header.r, header.g, header.b, 200) or header)
+    local leftTitleW, leftTitleH = arko.func.getTextSize(self.leftTitle, 'arko.font16')
+    local centerTitleW, centerTitleH = arko.func.getTextSize(self.centerTitle, 'arko.font12')
+    draw.SimpleText(self.leftTitle, 'arko.font16', 5, sh * .01 - leftTitleH / 2, self.colorText)
     draw.SimpleText(self.centerTitle, 'arko.font12', w / 2 - surface.GetTextSize(self.centerTitle) / 2, 6, darkText)
 
     if self.close then
-        self.clsBtn:SetPos(w - ScrH() / 50 - 2, 2)
+        self.clsBtn:SetPos(w - sh * .02 - 2, 2)
     elseif !self.close and IsValid(self.clsBtn) then
         self.clsBtn:Remove()
     end
     
     if self.draggable then
         if IsValid(self.clsBtn) then
-            self.dragPanel:SetSize(w - ScrH() / 50 - 5, ScrH() / 50)
+            self.dragPanel:SetSize(w - sh * .02 - 5, sh * .02)
         else
-            self.dragPanel:SetSize(w, ScrH() / 50)
+            self.dragPanel:SetSize(w, sh * .02)
         end
     elseif !self.draggable and IsValid(self.dragPanel) then
         self.dragPanel:Remove()

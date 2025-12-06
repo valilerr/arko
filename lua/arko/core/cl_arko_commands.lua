@@ -1,16 +1,33 @@
 local sw, sh = ScrW(), ScrH()
 
 arko.client.commands = {
-    ["ui.frame"] = function()
+    ['ui.frame'] = function()
         local frame = vgui.Create('arko.frame')
-        frame:SetSize(sw / 3, sh / 3)
-        frame:Center()
+        frame:SetSize(sw * .5, sh * .5)
         frame:setTitle('Arko')
-        frame:setSubtitle('Меню')
+        frame:setSubtitle('Frame')
+        frame:Center()
     end,
-    ["info"] = function()
-        print("Arko GMod Library")
-        print("Version: " .. arko.version)
+    ['ui.scrollpanel'] = function()
+        local frame = vgui.Create('arko.frame')
+        frame:SetSize(sw * .5, sh * .5)
+        frame:setTitle('Arko')
+        frame:setSubtitle('ScrollPanel')
+        frame:Center()
+
+        local scrollPanel = vgui.Create('arko.scrollpanel', frame)
+        scrollPanel:Dock(FILL)
+        scrollPanel:DockMargin(5, sh * .02 + 5, 5, 5)
+        for i = 0, 10 do
+            local panel = vgui.Create('arko.panel', scrollPanel)
+            panel:Dock(TOP)
+            panel:DockMargin(5, 5, 5, 5)
+            panel:SetTall(sh * .05)
+        end
+    end,
+    ['info'] = function()
+        print('Arko GMod Library')
+        print('Version: ' .. arko.version)
     end
 }
 

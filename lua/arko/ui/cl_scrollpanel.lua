@@ -1,27 +1,18 @@
 local PANEL = {}
 
 function PANEL:Init()
-    self.sbar = self:GetVBar()
-
-    function self.sbar:Paint(w, h)
-        draw.RoundedBox(5, 0, 0, w, h, arko.cfg.get_color('sbar'))
-    end 
-
-    function self.sbar.btnGrip:Paint(w, h)
-        draw.RoundedBox(5, 0, 0, w, h, arko.cfg.get_color('sbarGrip'))
-    end
-
-    function self.sbar.btnUp:Paint(w, h)
-        draw.RoundedBox(5, 0, 0, w, h, arko.cfg.get_color('sbarBtn'))
-    end
-
-    function self.sbar.btnDown:Paint(w, h)
-        draw.RoundedBox(5, 0, 0, w, h, arko.cfg.get_color('sbarBtn'))
-    end
+    self:GetVBar():SetWide(ScrW() * .0025)
 end
 
 function PANEL:Paint(w, h)
-    draw.RoundedBox(8, 0, 0, w, h, arko.cfg.get_color('secondary'))
+    local bar = self:GetVBar()
+    bar.Paint = function(_, w, h)
+        draw.RoundedBox(2, 0, 0, w, h, arko.getColor('scrollBar'))
+    end
+
+    bar.btnGrip.Paint = function(_, w, h)
+        draw.RoundedBox(2, 0, 0, w, h, arko.getColor('scrollBarGrip'))
+    end
 end
 
 vgui.Register('arko.scrollpanel', PANEL, 'DScrollPanel')

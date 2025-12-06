@@ -63,7 +63,7 @@ function PANEL:Paint(w, h)
 end
 
 function PANEL:SetPlayer(ply, size)
-    self.base:SetPlayer(ply, size)
-  end
+  self.base:SetPlayer(ply, size)
+end
 
 vgui.Register("arko.avatar", PANEL, 'EditablePanel')
