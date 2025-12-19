@@ -34,6 +34,7 @@ arko.client.commands = {
 
 function arko.client.init_commands()
     concommand.Add("arko", function(pl, _, args)
+        if args[1] == '' then return end
         if arko.client.commands[args[1]] then
             arko.client.commands[args[1]]()
         else

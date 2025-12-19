@@ -32,6 +32,7 @@ arko.server.commands = {
 }
 
 concommand.Add("arko", function(_, _, args)
+    if args[1] == '' then return end
     if arko.server.commands[args[1]] then
         arko.server.commands[args[1]]()
     else

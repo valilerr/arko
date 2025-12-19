@@ -12,10 +12,10 @@ arko.func = arko.func or {
             end
 
             if progress == 1 then
-                panel.Think = nil    
                 if close then
                     panel:Remove()
                 end
+                panel.Think = nil   
             end
         end
     end,
@@ -146,7 +146,7 @@ arko.func = arko.func or {
     end,
 
     drawIcon = function(x, y, w, h, color, material)
-        surface.SetMaterial(material)
+        surface.SetMaterial(Material(material))
         surface.SetDrawColor(color)
         surface.DrawTexturedRect(x, y, w, h)
     end,

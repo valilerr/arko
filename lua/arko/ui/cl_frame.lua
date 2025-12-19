@@ -94,11 +94,11 @@ function PANEL:Init()
     self.leftTitle = 'Title'
     self.centerTitle = 'Subtitle'
     self.popup = true
+    self.addPaintFunc = function() end
 
     if self.close then
         self.clsBtn = vgui.Create('arko.button', self)
         self.clsBtn:SetSize(sh * .02, sh * .02)
-        self.clsBtn:setIcon(Material('arko/close.png'))
         self.clsBtn.DoClick = function() arko.func.animateAlpha(self, .2, true) end
 
         self.clsBtn.DoRightClick = function()
@@ -107,7 +107,7 @@ function PANEL:Init()
         end
 
         self.clsBtn.Think = function()
-            if self.popup or self.alpha then
+            if self.popup or self.popup then
                 self:MakePopup(!self.alpha)
                 self:SetKeyBoardInputEnabled(!self.alpha)
                 self:SetMouseInputEnabled(!self.alpha)
@@ -127,15 +127,16 @@ function PANEL:Init()
 end
 
 function PANEL:Paint(w, h)
-    draw.RoundedBox(8, 0, 0, w, h, self.alpha and Color(primary.r, primary.g, primary.b, 200) or primary)
-    draw.RoundedBox(8, 2, 2, w - 4, sh * .02, self.alpha and Color(header.r, header.g, header.b, 200) or header)
+    draw.RoundedBox(6, 0, 0, w, h, Color(stroke.r, stroke.g, stroke.b, 125))
+    draw.RoundedBox(6, 2, 2, w - 4, h - 4, self.alpha and Color(primary.r, primary.g, primary.b, 125) or Color(primary.r, primary.g, primary.b, 250))
+    draw.RoundedBox(6, 4, 4, w - 8, sh * .02, self.alpha and Color(header.r, header.g, header.b, 200) or Color(header.r, header.g, header.b, 250))
     local leftTitleW, leftTitleH = arko.func.getTextSize(self.leftTitle, 'arko.font16')
     local centerTitleW, centerTitleH = arko.func.getTextSize(self.centerTitle, 'arko.font12')
-    draw.SimpleText(self.leftTitle, 'arko.font16', 5, sh * .01 - leftTitleH / 2, self.colorText)
-    draw.SimpleText(self.centerTitle, 'arko.font12', w / 2 - surface.GetTextSize(self.centerTitle) / 2, 6, darkText)
+    draw.SimpleText(self.leftTitle, 'arko.font16', 5, 4 + sh * .01 - leftTitleH / 2, self.colorText)
+    draw.SimpleText(self.centerTitle, 'arko.font12', w / 2 - centerTitleW / 2, (4 + sh * .02 / 2) - centerTitleH / 2, darkText)
 
     if self.close then
-        self.clsBtn:SetPos(w - sh * .02 - 2, 2)
+        self.clsBtn:SetPos(w - sh * .02 - 2, 4)
     elseif !self.close and IsValid(self.clsBtn) then
         self.clsBtn:Remove()
     end
@@ -149,6 +150,8 @@ function PANEL:Paint(w, h)
     elseif !self.draggable and IsValid(self.dragPanel) then
         self.dragPanel:Remove()
     end
+
+    self.addPaintFunc(self, w, h)
 end
 
 function PANEL:setTitle(text)
@@ -173,6 +176,18 @@ end
 
 function PANEL:close()
     arko.func.animateAlpha(self, .2, true)
+end
+
+function PANEL:addPaint(func)
+    self.addPaintFunc = func
+end
+
+function PANEL:getTitle()
+    return self.leftTitle
+end
+
+function PANEL:getSubtitle()
+    return self.centerTitle
 end
 
 vgui.Register('arko.frame', PANEL, 'EditablePanel')
