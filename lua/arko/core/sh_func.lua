@@ -51,19 +51,39 @@ arko.func = arko.func or {
 
     animateValue = function(oldValue, newValue, duration)
         local startTime = SysTime()
-
-        hook.Add('Think', 'Arko.AnimateValue', function()
+        timer.Create('Arko.AnimateValue', FrameTime(), 0, function()
             local elapsed = SysTime() - startTime
             local progress = math.Clamp(elapsed / duration, 0, 1)
 
-            local newValue = Lerp(progress, oldValue, newValue)
+            local value = Lerp(progress, oldValue, newValue)
 
             if progress == 1 then
-                hook.Remove('Think', 'Arko.AnimateValue')
-                return newValue
+                timer.Remove('Arko.AnimateValue')
+                return value
             end
 
-            return newValue
+            return value
+        end)
+    end,
+
+    animateColor = function(oldColor, newColor, duration)
+        local startTime = SysTime()
+        timer.Create('Arko.AnimateColor', FrameTime(), 0, function()
+            local elapsed = SysTime() - startTime
+            local progress = math.Clamp(elapsed / duration, 0, 1)
+            local oldR, oldG, oldB = oldColor.r, oldColor.g, oldColor.b
+            local newR, newG, newB = newColor.r, newColor.g, newColor.b
+            
+            local resultR, resultG, resultB = Lerp(progress, oldR, newR), Lerp(progress, oldG, newG), Lerp(progress, oldB, newB)
+            local resultColor = Color(resultR, resultG, resultB)
+
+            
+            if progress == 1 then
+                timer.Remove('Arko.AnimateColor')
+                return resultColor
+            end
+
+            return resultColor
         end)
     end,
 

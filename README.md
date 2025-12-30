@@ -3,7 +3,7 @@
 # Arko GMod Library
 **Arko is a GMod Library that have been made to simplify GLua coding. If you have questions or issues about it, please text me here or in discord(valilerr)** 
 
-***Current version: 0.55***
+***Current version: 0.6***
 
 *this library in development stage and may contain a lot of bugs*
 
@@ -38,7 +38,7 @@
 
 
   - ### func: {} - arko's functions table
-    - ### animateAlpha: function(panel, duration, close_bool(optional)) 
+    - ### animateAlpha: function(panel: Panel, duration: number, close_bool: bool) 
     *- function that animates panel's alpha value. If close_bool is false then alpha value will be changed from 0 to 255 else if close_bool is true then alpha value will be changed from 255 to 0 and panel will close.* 
     *Example:*
     ```lua
@@ -53,7 +53,7 @@
         arko.func.animateAlpha(frame, .2, true)
     ```
 
-    - ### animatePos: function(panel, oldPos[x, y], newPos[x, y], duration) 
+    - ### animatePos: function(panel: Panel, oldPos: table, newPos: table, duration: number) 
     *- function that animates panel's position from oldPos to newPos.*
     *Example:*
     ```lua
@@ -64,7 +64,7 @@
     arko.func.animatePos(frame, frame:GetPos(), {ScrW() * .2, ScrH() * .1}, .2)
     ```
 
-    - ### animateSize: function(panel, oldSize[w, h], newSize[w, h], duration) 
+    - ### animateSize: function(panel: Panel, oldSize: table, newSize: table, duration: number) 
     *- function that animates panel's size from oldSize to newSize.*
     *Example:*
     ```lua
@@ -75,67 +75,74 @@
     arko.func.animateSize(frame, frame:GetSize(), {ScrW(), ScrH()}, .2)
     ```
 
-    - ### animateValue: function(oldValue, newValue, duration)
+    - ### animateValue: function(oldValue: number, newValue: number, duration: number)
     *- function that animates value from oldValue to newValue.*
     *Example:*
     ```lua
     arko.func.animateValue(150, 50, 1)
     ```
 
-    - ### notify: function(player, text, type("generic", "error", "hint", "undo"), duration)
+    - ### animaetColor: function(oldColor: Color, newColor: Color, duration: number)
+    *- function that animate Color() from oldColor to newColor in [duration] seconds.*
+    *Example:*
+    ```lua
+    arko.func.animateColor(Color(220, 75, 75), Color(75, 220, 75), .2)
+    ```
+
+    - ### notify: function(player: Player, text: string, type: string, duration: number)
     *- function that opens the notify panel on player's screen.*
     *Example:*
     ```lua
     arko.func.notify(LocalPlayer(), "Notification text", "generic", 5)
     ```
 
-    - ### ply: function(steamid)
+    - ### ply: function(steamid: string)
     *- function that finds a player by steamid32 or steamid64.*
     *Example:*
     ```lua
-    arko.func.ply(76561199060521595) // It's my SteamID64
+    arko.func.ply("76561199060521595") // It's my SteamID64
     ```
 
-    - ### drawIcon: function(x, y, w, h, color, icon)
+    - ### drawIcon: function(x: number, y: number, w: number, h: number, color: Color, icon: IMaterial)
     *- function that draws an icon with parameters.*
     *Example:*
     ```lua
     arko.func.drawIcon(0, 0, 64, 64, Color(255, 255, 255), Material('test.png'))
     ```
 
-    - ### getTextSize: function(text, font)
+    - ### getTextSize: function(text: string, font: string)
     *- function that returns text size.*
     *Example:*
     ```lua
     arko.func.getTextSize('Play', 'arko.font20')
     ```
 
-  - ### data: {} - arko's data functions table (all functions edit garrysmod/data/arko directory)
+  - ### data: {} - arko's data functions table
 
     - ### init: function() - function that creates the default arko_data's files
 
-    - ### write: function(dir, fileName, content, cl_or_sv(CLIENT, SERVER))
+    - ### write: function(dir: string, fileName: string, content: string, cl_or_sv: Side)
     *- function that writes a file with [content] in arko/[dir]/[fileName].*
     *Example:*
     ```lua
     arko.data.write('my_addon', 'food.txt', 'Apple, Banana, Strawberry', CLIENT)
     ```
 
-    - ### append: function(dir, fileName, content, cl_or_sv(CLIENT, SERVER))
+    - ### append: function(dir: string, fileName: string, content: string, cl_or_sv: Side)
     *- function that appends a [content] to file in data/arko/[dir]/[fileName].*
     *Example:*
     ```lua
     arko.data.append('my_addon', 'food.txt', ', Bread, Potato', CLIENT)
     ```
 
-    - ### get: function(path, cl_or_sv(CLIENT, SERVER))
+    - ### get: function(path: string, cl_or_sv: Side)
     *- function that returns content of file in arko/[path].*
     *Example:*
     ```lua
     arko.data.get('my_addon/food.txt', CLIENT)
     ```
 
-    - ### delete: function(path, cl_or_sv)
+    - ### delete: function(path: string, cl_or_sv: Side)
     *- function that removes file in arko/[path].*
     *Example:*
     ```lua

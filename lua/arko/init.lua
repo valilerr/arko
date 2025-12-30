@@ -6,7 +6,7 @@
 ]]
 
 arko = arko or {
-    version = '0.55',
+    version = '0.6',
     client = {},
     server = {},
     init = function(path)
