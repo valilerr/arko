@@ -100,11 +100,11 @@ arko.func = arko.func or {
         end
     end,
 
-    textbox = function(title, desc, func)
+    textbox = function(title, subtitle, func)
         local frame = vgui.Create("arko.frame")
         frame:SetSize(ScrW() / 8, ScrH() / 8)
-        frame:title1(title)
-        frame:title2(desc)
+        frame:setTitle(title)
+        frame:setSubtitle(subtitle)
         frame:Center()
         frame:MakePopup()
 
@@ -126,22 +126,15 @@ arko.func = arko.func or {
         end
     end,
 
-    ply = function(steamid64, steamid32)
-        if steamid64 == nil and steamid32 == nil then
-            local ply = LocalPlayer()
-            if IsValid(ply) then return end
-
-            return ply
-        elseif steamid64 != nil then
-            local ply = player.GetBySteamID64(steamid64)
-            if IsValid(ply) then return end
-
-            return ply
-        elseif steamid32 != nil then
-            local ply = player.GetBySteamID(steamid32)
-            if IsValid(ply) then return end
-
-            return ply
+    ply = function(steamid)
+        local ply64 = player.GetBySteamID64(steamid)
+        local ply32 = player.GetBySteamID(steamid)
+        if ply64 then
+            return ply64
+        elseif ply32 then
+            return ply32
+        else
+            arko.msgError('(arko.func.ply) Player not found.')
         end
     end,
 

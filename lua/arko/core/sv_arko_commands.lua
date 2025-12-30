@@ -17,10 +17,6 @@ arko.server.commands = {
         end
     end,
     ["list.commands"] = function()
-        print("Client Commands:")
-        for name, _ in ipairs(arko.client.commands) do
-            print(name)
-        end
         print("Server commands:")
         for name, _ in ipairs(arko.server.commands) do
             print(name)
@@ -32,7 +28,7 @@ arko.server.commands = {
 }
 
 concommand.Add("arko", function(_, _, args)
-    if args[1] == '' then return end
+    if !args then return end
     if arko.server.commands[args[1]] then
         arko.server.commands[args[1]]()
     else
