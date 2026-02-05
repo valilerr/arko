@@ -6,9 +6,7 @@
 ]]
 
 arko = arko or {
-    version = '0.6',
-    client = {},
-    server = {},
+    version = '0.65',
     init = function(path)
         if string.find(path, "sh_") then
             if SERVER then
@@ -57,28 +55,36 @@ arko = arko or {
         end,
         isLoaded = false
     },
+    workshop = {
+        run = function()
+            if SERVER then
+                resource.AddWorkshop("3610914065")
+            end
+            arko.workshop.isLoaded = true
+        end
+    },
     addons = {
         run = function()
             local _, directories = file.Find('arko_addons/*', 'LUA')
 
             for _, dir in ipairs(directories) do
                 arko.init('arko_addons/' .. dir .. '/' .. arko.getCfg('addonInitFile'))
-                arko.msg('(Addons)' .. dir .. ' loaded!\n')
+                arko.msg('Addons', dir .. ' loaded!\n')
             end
 
             arko.addons.isLoaded = true
         end,
         isLoaded = false
     },
-    msg = function(text)
-        MsgC(Color(75, 220, 75), text)
+    msg = function(prefix, text)
+        MsgC(Color(75, 220, 75), '(' .. prefix .. ') ', Color(255, 255, 255), text)
     end,
-    msgError = function(text)
-        MsgC(Color(220, 75, 75), text)
+    msgError = function(prefix, text)
+        MsgC(Color(220, 75, 75), '(' .. prefix .. ') ' .. text)
     end,
     run = function()
         if arko.isLoaded then
-            arko.msg('Restarting all library...\n')
+            arko.msg('Arko', 'Restarting all library...\n')
         end
         arko.loadTime = SysTime()
         arko.isLoaded = false 
@@ -89,25 +95,23 @@ arko = arko or {
         arko.init('arko/sh_cfg.lua')
 
         arko.core.run() 
-        if arko.core.isLoaded then arko.msg('(Core) ', Color(255, 255, 255), 'Loaded in ' .. math.Round(SysTime() - arko.loadTime, 3) .. ' seconds.\n') end
+        if arko.core.isLoaded then arko.msg('Core', 'Loaded in ' .. math.Round(SysTime() - arko.loadTime, 3) .. ' seconds.\n') end
 
         arko.ui.run()
-        if arko.ui.isLoaded then MsgC(Color(75, 220, 75), '(UI) ', Color(255, 255, 255), 'Loaded in ' .. math.Round(SysTime() - arko.loadTime, 3) .. ' seconds.\n') end
+        if arko.ui.isLoaded then arko.msg('UI', 'Loaded in ' .. math.Round(SysTime() - arko.loadTime, 3) .. ' seconds.\n') end
 
-        if SERVER then
-            resource.AddWorkshop("3610914065")
-        end
-        MsgC(Color(75, 220, 75), '(Workshop) ', Color(255, 255, 255), 'Loaded in ' .. math.Round(SysTime() - arko.loadTime, 3) .. ' seconds.\n')
+        arko.workshop.run()
+        if arko.workshop.isLoaded then arko.msg('Workshop', 'Loaded in ' .. math.Round(SysTime() - arko.loadTime, 3) .. ' seconds.\n') else arko.msgError('Arko Workshop', 'A problem occured with workshop!') end
 
         arko.isLoaded = true
         arko.loadTime = math.Round(SysTime() - arko.loadTime, 3)
         
-        MsgC(Color(75, 220, 75), 'Arko loaded in ' .. arko.loadTime .. ' seconds.\n')
+        arko.msg('Arko',  'Loaded in ' .. arko.loadTime .. ' seconds.\n')
         
         print('')
 
         arko.addons.run()
-        if arko.addons.isLoaded then MsgC(Color(75, 220, 75), '(Arko) ', Color(255, 255, 255), 'Addons loaded!\n') end
+        if arko.addons.isLoaded then arko.msg('Arko', 'Addons loaded!\n') else arko.msgError('Arko Addons', 'A problem occured with addons!\n') end
     end
 }
 
