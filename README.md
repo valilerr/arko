@@ -185,7 +185,7 @@
 **You can customize them if you want. Color theme in arko/sh_cfg.lua (arko.cfg['colors']). UI Elements in /arko/ui**
 
 - ```arko.frame``` - Styled Frame [arko/ui/arko.frame.lua]
-<img alt="arko_wide" src="../arko/4000_523.jpg" />
+![4000_523](https://github.com/user-attachments/assets/3e6892c3-0e3c-4f22-8ed3-66dad0cceecc)
 *Main methods:*
 - ```setTitle: function(text: string)```
 *- function that changes title text.*
