@@ -6,7 +6,7 @@
 ]]
 
 arko = arko or {
-    version = '0.65',
+    version = '0.7',
     init = function(path)
         if string.find(path, "sh_") then
             if SERVER then

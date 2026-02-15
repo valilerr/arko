@@ -3,7 +3,7 @@
 # Arko GMod Library
 **Arko is a GMod Library that have been made to simplify GLua coding (UI making in main). If you have questions or issues about it, please text me here or in discord(valilerr)** 
 
-***Current version: 0.65***
+***Current version: 0.6***
 
 *this library in development stage and may contain a lot of bugs*
 
@@ -180,49 +180,3 @@
     ```lua
     arko.data.delete('my_addon/food.txt', CLIENT)
     ```
-
-## UI Elements
-**You can customize them if you want. Color theme in arko/sh_cfg.lua (arko.cfg['colors']). UI Elements in /arko/ui**
-
-- ```arko.frame``` - Styled Frame [arko/ui/arko.frame.lua]
-![4000_523](https://github.com/user-attachments/assets/3e6892c3-0e3c-4f22-8ed3-66dad0cceecc)
-*Main methods:*
-- ```setTitle: function(text: string)```
-*- function that changes title text.*
-- ```setSubtitle: function(text)```
-*- function that changes subtitle text.*
-- ```drag: function(drag: bool)```
-*- function that activates or deactivates frame dragging.*
-- ```closeBtn: function(closeBtn: bool)```
-*- function that activates or deactivates close button.*\
-*Extra methods:*
-- ```addPaint: function(paintFunction: function)```
-*- function that adds new paint function without removing current.*
-- ```getTitle: function()```
-*- function that returns title text.*
-- ```getSubtitle: function()```
-*- function that returns subtitle text.*
-- ```close: function()```
-*- function that closes the frame.*\
-*Example:*
-```lua
-local frame = vgui.Create('arko.frame')
-frame:SetSize(ScrW() * .5, ScrH() * .5)
-frame:Center()
-frame:drag(true)
-frame:closeBtn(true)
-frame:setTitle('Arko')
-frame:setSubtitle('Frame')
-frame:MakePopup()
-
-// Extra
-
-local title = frame:getTitle()
-local subtitle = frame:getSubtitle()
-
-frame:addPaint(function(self, w, h)
-  draw.RoundedBox(6, 50, 50, 64, 64, Color(255, 255, 255))
-end)
-
-frame:close() // Closes the frame
-```

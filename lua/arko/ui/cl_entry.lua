@@ -7,31 +7,33 @@ function PANEL:Init()
 
     self.main = vgui.Create('DPanel', self)
     self.main.Paint = function(_, w, h)
-        draw.RoundedBox(6, 0, 0, w, h, arko.cfg.get_color('text'))
+        draw.RoundedBox(6, 0, 0, w, h, arko.getColor('button'))
     end
 
     self.entry = vgui.Create('DTextEntry', self.main)
     self.entry:SetFont('arko.font18')
     self.entry:SetDrawLanguageID(false)
     self.entry:SetPaintBackground(false)
+    self.entry:
 end
 
-function PANEL:SetTitle(title)
+function PANEL:setTitle(title)
     self.title = title
     self:SetTall(44)
 end
 
-function PANEL:SetPlaceholder(placeholder)
+function PANEL:setPlaceholder(placeholder)
     self.entry:SetPlaceholderText(placeholder)
 end
 
-function PANEL:GetValue()
+function PANEL:getValue()
     return self.entry:GetText()
 end
 
 function PANEL:Paint(w, h)
     if self.title != '' then
-        draw.SimpleText(self.title, 'arko.font18', 6, 0, arko.cfg.get_color('text'))
+        local textW, textH = arko.func.getTextSize(self.title, 'arko.font18')
+        draw.SimpleText(self.title, 'arko.font18', w / 2 - textW / 2, h / 2 - textH / 2, arko.getColor('text'))
     end
 end
 

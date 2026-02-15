@@ -1,3 +1,5 @@
+local sw, sh = ScrW(), ScrH()
+
 arko.func = arko.func or {
     animateAlpha = function(panel, duration, close)
         local startTime = SysTime()
@@ -87,62 +89,97 @@ arko.func = arko.func or {
         end)
     end,
 
-    notify = function(ply, text, type, duration)
-        if ply == LocalPlayer() then
-            local colors = {
-                ["generic"] = Color(75, 220, 75),
-                ["hint"] = Color(220, 220, 75),
-                ["error"] = Color(220, 75, 75)
-            }
-            surface.SetFont('arko.font18')
-            local textW, textH = surface.GetTextSize(text)
-            local panel = vgui.Create('arko.panel')
-            panel:Dock(TOP)
-            panel:DockMargin(5, 5, ScrW() - textW * 1.075, 0)
-            panel:SetTall(ScrH() / 30)
-            local startTime = SysTime()
-            panel.Paint = function(_, w, h)
-                local elapsed = SysTime() - startTime
-                local progress = math.Clamp(elapsed / duration, 0, 1)
-                local w, h = panel:GetSize()
-                draw.RoundedBox(6, 0, 0, Lerp(progress, 0, w), h, arko.getColor("text"))
-                draw.RoundedBox(8, 2, 2, w - 4, h - 4, arko.getColor("primary"))
-                draw.RoundedBox(8, 0, 0, 4, h, colors[type])
-                
-                draw.SimpleText(text, 'arko.font18', 12, h / 2 - textH / 2, arko.getColor('text'))
-            end
+    notify = function(text, type, duration)
+        local colors = {
+            ["generic"] = Color(75, 220, 75),
+            ["hint"] = Color(220, 220, 75),
+            ["error"] = Color(220, 75, 75)
+        }
+        surface.SetFont('arko.font18')
+        local textW, textH = surface.GetTextSize(text)
+        local panel = vgui.Create('arko.panel')
+        panel:Dock(TOP)
+        panel:DockMargin(5, 5, sw - textW * 1.075, 0)
+        panel:SetTall(sh / 30)
+        local startTime = SysTime()
+        panel.Paint = function(_, w, h)
+            local elapsed = SysTime() - startTime
+            local progress = math.Clamp(elapsed / duration, 0, 1)
+            local w, h = panel:GetSize()
+            draw.RoundedBox(6, 0, 0, Lerp(progress, 0, w), h, arko.getColor("text"))
+            draw.RoundedBox(8, 2, 2, w - 4, h - 4, arko.getColor("primary"))
+            draw.RoundedBox(8, 0, 0, 4, h, colors[type])
+            
+            draw.SimpleText(text, 'arko.font18', 12, h / 2 - textH / 2, arko.getColor('text'))
+        end
 
-            arko.func.animateAlpha(panel, 0.2)
+        arko.func.animateAlpha(panel, 0.2)
 
-            timer.Simple(duration, function()
-                arko.func.animateAlpha(panel, 0.2, true)
-            end)
+        timer.Simple(duration, function()
+            arko.func.animateAlpha(panel, 0.2, true)
+        end)
+    end,
+
+    confirm = function(text, func)
+        if IsValid(frame) then return end
+        frame = vgui.Create("arko.frame")
+        frame:SetSize(sw * .15, sh * .125)
+        frame:Center()
+        frame:setTitle("")
+        frame:setSubtitle("Потвердите ваше действие")
+        frame:closeBtn(false)
+        frame:addPaint(function(self, w, h)
+            local textw, texth = arko.func.getTextSize(text, "arko.font18")
+            draw.SimpleText(text, "arko.font18", w / 2 - textw / 2, h / 2 - texth, color_text)
+        end)
+    
+        yesButton = vgui.Create("arko.button", frame)
+        yesButton:SetSize(sw * .05, sh * .0225)
+        yesButton:SetPos(sw * .09, sh * .08)
+        yesButton.Paint = function(_, w, h)
+            draw.RoundedBox(8, 0, 0, w, h, arko.getColor('button'))
+            draw.SimpleText("Да", "arko.font16", w / 2, h / 2.1, color_text, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+        yesButton.DoClick = function()
+            arko.func.animateAlpha(frame, .2, true)
+            func()
+        end
+
+        noButton = vgui.Create("arko.button", frame)
+        noButton:SetSize(sw * .05, sh * .0225)
+        noButton:SetPos(sw * .015, sh * .08)
+        noButton.Paint = function(_, w, h)
+            draw.RoundedBox(8, 0, 0, w, h, arko.getColor('button'))
+            draw.SimpleText("Нет", "arko.font16", w / 2, h / 2.1, color_text, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+        noButton.DoClick = function()
+            arko.func.animateAlpha(frame, .2, true)
         end
     end,
 
-    textbox = function(title, subtitle, func)
-        local frame = vgui.Create("arko.frame")
-        frame:SetSize(ScrW() / 8, ScrH() / 8)
-        frame:setTitle(title)
-        frame:setSubtitle(subtitle)
+    textbox = function(title, placeholder, func)
+        frame = vgui.Create("arko.frame")
+        frame:SetSize(sw * .15, sh * .125)
         frame:Center()
-        frame:MakePopup()
+        frame:setTitle("")
+        frame:setSubtitle(title)
 
-        local textEntry = vgui.Create("arko.entry", frame)
-        textEntry:Dock(FILL)
-        textEntry:SetPlaceholder("")
+        entry = vgui.Create("arko.entry", frame)
+        entry:SetSize(sw * .1, sh * .3)
+        entry:SetPos(sw * .025, sh * .05)
+        entry:setPlaceholder(placeholder)
 
-        local button = vgui.Create("arko.button", frame)
-        button:SetSize(100, 30)
-        button:SetPos(100, 90)
-        button.Paint = function(_, w, h)
-            draw.RoundedBox(8, 0, 0, w, h, Color(100, 100, 100))
-        end
+        applybutton = vgui.Create("arko.button", frame)
+        applybutton:SetSize(sw * .05, sh * .0225)
+        applybutton:SetPos(sw * .05, sh * .08)
+        applybutton:addPaint(function(_, w, h)
+            draw.RoundedBox(8, 0, 0, w, h, arko.getColor('button'))
+            draw.SimpleText("Выполнить", "arko.font16", w / 2, h / 2.1, color_text, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end)
 
-        button.DoClick = function()
-            local text = textEntry:GetValue()
-            func(text)
-            arko.func.closeAnim(frame, 0.2)
+        applybutton.DoClick = function()
+            func(entry:getValue())
+            arko.func.animateAlpha(frame, .2, true)
         end
     end,
 
@@ -167,5 +204,5 @@ arko.func = arko.func or {
     getTextSize = function(text, font)
         surface.SetFont(font)
         return surface.GetTextSize(text)
-    end,
+    end
 }
