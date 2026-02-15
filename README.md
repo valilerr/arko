@@ -3,7 +3,7 @@
 # Arko GMod Library
 **Arko is a GMod Library that have been made to simplify GLua coding (UI making in main). If you have questions or issues about it, please text me here or in discord(valilerr)** 
 
-***Current version: 0.6***
+***Current version: 0.7***
 
 *this library in development stage and may contain a lot of bugs*
 
