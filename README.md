@@ -113,7 +113,7 @@
     arko.func.animateValue(150, 50, 1)
     ```
 
-    - ### ```animaetColor: function(oldColor: Color, newColor: Color, duration: number)```
+    - ### ```animateColor: function(oldColor: Color, newColor: Color, duration: number)```
     *- function that animate Color() from oldColor to newColor in [duration] seconds.*\
     *Example:*
     ```lua
